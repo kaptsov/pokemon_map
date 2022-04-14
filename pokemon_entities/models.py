@@ -14,6 +14,11 @@ class PokemonEntity(models.Model):
     longitude = models.FloatField()
     appeared_at =  models.DateTimeField(blank=True, null=True)
     dissappeared_at = models.DateTimeField(blank=True, null=True)
+    level = models.SmallIntegerField(blank=True)
+    health = models.SmallIntegerField(blank=True)
+    strength = models.SmallIntegerField(blank=True)
+    defense = models.SmallIntegerField(blank=True)
+    stamina = models.SmallIntegerField(blank=True)
 
     def __str__(self):
         return f'{self.latitude} - {self.longitude}'
