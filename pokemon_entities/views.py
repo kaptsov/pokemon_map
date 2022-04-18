@@ -69,13 +69,22 @@ def show_pokemon(request, pokemon_id):
     pokemons_on_page = []
     for pokemon_entity in pokemon_entities:
         pokemons_on_page.append({
+            pokemon.name,
             folium_map,
             pokemon_entity.latitude,
             pokemon_entity.longitude,
-            request.build_absolute_uri(pokemon_entity.pokemon.picture.url)
+            request.build_absolute_uri(pokemon_entity.pokemon.picture.url),
         })
+
+    pokemon_parameters = {
+        'title_ru': pokemon.name,
+        'title_en': pokemon.title_en,
+        'title_jp': pokemon.title_jp,
+        'img_url': request.build_absolute_uri(pokemon.picture.url),
+        'description': pokemon.description,
+    }
 
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(),
-        'pokemon': pokemon
+        'pokemon': pokemon_parameters,
     })
