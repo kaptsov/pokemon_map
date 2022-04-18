@@ -12,7 +12,9 @@ class Pokemon(models.Model):
         'self',
         on_delete=models.CASCADE,
         blank=True,
-        null=True)
+        null=True,
+        related_name='next_evolution'
+    )
 
     def __str__(self):
         return self.name

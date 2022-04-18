@@ -91,6 +91,14 @@ def show_pokemon(request, pokemon_id):
             'img_url': request.build_absolute_uri(pokemon.previous_evolution.picture.url)
         }
 
+    next_evolution = pokemon.next_evolution.all().first()
+    if next_evolution is not None:
+        pokemon_parameters['next_evolution'] = {
+            'pokemon_id': next_evolution.id,
+            'title_ru': next_evolution.name,
+            'img_url': request.build_absolute_uri(next_evolution.picture.url)
+        }
+
 
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(),
