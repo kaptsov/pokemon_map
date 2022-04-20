@@ -2,6 +2,7 @@ from django.db import models
 
 
 class PokemonElementType(models.Model):
+
     title = models.CharField(verbose_name='Стихия', max_length=200, blank=True)
 
     def __str__(self):
@@ -44,6 +45,3 @@ class PokemonEntity(models.Model):
 
     def __str__(self):
         return f'{self.pokemon} - {self.level}'
-
-
-
