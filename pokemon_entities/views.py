@@ -1,10 +1,8 @@
 import folium
-import json
 
-from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from .models import Pokemon, PokemonEntity
-from django.core.exceptions import ObjectDoesNotExist
+
 
 
 MOSCOW_CENTER = [55.751244, 37.618423]
@@ -59,20 +57,9 @@ def show_all_pokemons(request):
 
 def show_pokemon(request, pokemon_id):
 
-    pokemon_entities = PokemonEntity.objects.all()
-
+    pokemon_entity = get_object_or_404(PokemonEntity, pk=pokemon_id)
     pokemon = get_object_or_404(Pokemon, pk=pokemon_id)
-
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
-    pokemons_on_page = []
-    for pokemon_entity in pokemon_entities:
-        pokemons_on_page.append({
-            pokemon.name,
-            folium_map,
-            pokemon_entity.latitude,
-            pokemon_entity.longitude,
-            request.build_absolute_uri(pokemon_entity.pokemon.picture.url),
-        })
 
     pokemon_parameters = {
         'title_ru': pokemon.name,
@@ -97,6 +84,12 @@ def show_pokemon(request, pokemon_id):
             'img_url': request.build_absolute_uri(next_evolution.picture.url)
         }
 
+    add_pokemon(
+        folium_map,
+        pokemon_entity.latitude,
+        pokemon_entity.longitude,
+        request.build_absolute_uri(pokemon_entity.pokemon.picture.url)
+    )
 
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(),
