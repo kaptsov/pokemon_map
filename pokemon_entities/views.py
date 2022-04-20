@@ -2,7 +2,7 @@ import folium
 import json
 
 from django.http import HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Pokemon, PokemonEntity
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -60,10 +60,8 @@ def show_all_pokemons(request):
 def show_pokemon(request, pokemon_id):
 
     pokemon_entities = PokemonEntity.objects.all()
-    try:
-        pokemon = Pokemon.objects.get(id=pokemon_id)
-    except ObjectDoesNotExist:
-        return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
+
+    pokemon = get_object_or_404(Pokemon, pk=pokemon_id)
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     pokemons_on_page = []
@@ -84,7 +82,7 @@ def show_pokemon(request, pokemon_id):
         'description': pokemon.description,
     }
 
-    if pokemon.previous_evolution is not None:
+    if pokemon.previous_evolution:
         pokemon_parameters['previous_evolution'] = {
             'pokemon_id': pokemon.previous_evolution.id,
             'title_ru': pokemon.previous_evolution.name,
@@ -92,7 +90,7 @@ def show_pokemon(request, pokemon_id):
         }
 
     next_evolution = pokemon.next_evolution.all().first()
-    if next_evolution is not None:
+    if next_evolution:
         pokemon_parameters['next_evolution'] = {
             'pokemon_id': next_evolution.id,
             'title_ru': next_evolution.name,
