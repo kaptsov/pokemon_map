@@ -6,12 +6,12 @@ class PokemonElementType(models.Model):
     title = models.CharField(verbose_name='Стихия', max_length=200, blank=True)
 
     def __str__(self):
-        return f'{self.title}'
+        return self.title
 
 
 class Pokemon(models.Model):
 
-    name = models.TextField(verbose_name='Имя покемона')
+    name = models.TextField(verbose_name='Имя покемона', default='')
     picture = models.ImageField(verbose_name='Картинка', upload_to='pokemon_images', blank=True, null=True)
     title_en = models.CharField(verbose_name='Название (англ)', max_length=200, blank=True)
     title_jp = models.CharField(verbose_name='Название (яп)', max_length=200, blank=True)
