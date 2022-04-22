@@ -57,8 +57,8 @@ def show_all_pokemons(request):
 
 def show_pokemon(request, pokemon_id):
 
-    pokemon_entities = PokemonEntity.objects.filter(pokemon_id=pokemon_id)
     pokemon = get_object_or_404(Pokemon, pk=pokemon_id)
+    pokemon_entities = pokemon.entities.all()
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
     pokemon_parameters = {
